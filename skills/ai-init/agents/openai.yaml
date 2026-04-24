@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Init"
+  short_description: "Run the ai-init bootstrap command explicitly"
+  default_prompt: "Use $ai-init to run the local ai-init bootstrap in this directory and show me the emitted follow-up prompt."

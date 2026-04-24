@@ -1,0 +1,28 @@
+This project is already in progress.
+
+Do not implement yet. Proceed in this order:
+
+1. Understand the project state from the current codebase, README, run commands, and recent work evidence.
+2. Classify information into four buckets:
+   - Belongs in AGENTS.md: non-obvious operating rules, required commands, verification order, no-touch zones, and guardrails.
+   - Belongs in docs/ai/project_memory.md: durable facts, core structure, canonical sources, and change impact rules.
+   - Belongs in docs/ai/change_playbook.md: checklists by change type, commonly missed items, and verification procedures.
+   - Does not need documentation: information already obvious from reading code or folders.
+3. If present, also classify:
+   - Belongs in docs/ai/agent_memory.md: repeated corrections, recurring mistakes, and durable working lessons.
+   - Belongs in docs/ai/user_preferences.md: stable user preferences for this project, output style, and working style.
+4. Separate facts confirmed from docs from facts confirmed in the live workspace.
+5. Based on that classification, draft a short AGENTS.md.
+6. Draft or improve docs/ai/project_memory.md.
+7. Draft or improve docs/ai/change_playbook.md.
+8. Write docs/ai/current_state.md for the current moment.
+9. If memory-plus is in use, draft agent_memory.md and user_preferences.md.
+10. Based on only one active piece of work, summarize the next one to three actions.
+
+Important:
+- Keep AGENTS.md short and forceful.
+- Keep Core Engineering Invariants (SSoT/SRP/Consistency/Atomicity/Idempotency/No Silent Fallback) short in AGENTS.md; put detailed checks in project_memory/change_playbook.
+- Do not put folder listings, stack introductions, or long architecture descriptions in AGENTS.md.
+- Put guardrails for security, performance, testing, and legacy danger areas in AGENTS.md first.
+- Keep the purposes separate: structural facts and durable rules in project_memory.md; change procedures and verification checklists in change_playbook.md.
+- Prefer this structure for current_state.md: Current objective / Verified today / Open risks / questions / Next actions / Verification status.

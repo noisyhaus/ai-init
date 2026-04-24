@@ -1,0 +1,54 @@
+Close this session.
+
+Do not start new implementation. Only perform closeout work.
+
+First check git evidence. If git is not initialized in this folder, state that first, skip the git steps below, and continue with documentation cleanup.
+1. `git status --short`
+2. `git diff --stat`
+3. `git diff --name-only`
+4. If needed, `git diff --cached --stat` and `git diff --cached --name-only`
+
+Then classify changes into these four groups when possible. If git is unavailable, state that this classification is a best-effort estimate.
+- Changes directly belonging to this session/work lane.
+- Dirty worktree changes that appear to predate this session.
+- Generated/runtime/cache/noise changes.
+- Sibling or external-path changes outside the current project scope.
+
+After classification, if possible, inspect actual diffs only for files directly in this session/work lane and read the logic changes. Do not indiscriminately read the entire raw diff; keep this limited to in-scope changes.
+
+Only then update these documents:
+1. docs/ai/current_state.md
+2. docs/ai/handoffs/YYYY-MM-DD.md
+3. docs/ai/agent_memory.md, if present
+4. docs/ai/user_preferences.md, if present
+5. docs/ai/project_memory.md, if structure, standards, or impact rules actually changed
+6. docs/ai/change_playbook.md, if change procedures or verification checklists actually changed
+
+Must include:
+- What was actually completed today.
+- The exact current state.
+- List of modified files.
+- Commands run and result summaries.
+- Verification status.
+- Remaining risks / open questions.
+- The first one to three actions for the next session.
+
+memory flush:
+- In docs/ai/agent_memory.md, keep only repeated corrections, recurring mistakes, and durable working lessons.
+- In docs/ai/user_preferences.md, keep only stable user preferences revealed during this session.
+- Do not put progress notes, temporary TODOs, or one-off notes in the memory layer.
+
+Additional rules:
+- Do not mark work complete by guessing.
+- Mark unverified work as unverified.
+- Keep current_state.md short and execution-focused.
+- Use the handoff as today's session record and next-session reference.
+- If an important design decision emerged, also decide whether it belongs in docs/adr/.
+- If .ai-index/ exists, note whether it needs an update before the next session.
+- For git handling, only collect, classify, and suggest automatically. Commit/push only when the user explicitly requests it.
+- Make the final output one "Session Close Summary" block containing:
+  1. Recommended staging scope.
+  2. Draft commit title.
+  3. Risks of committing now.
+  4. Short recovery prompt to paste into the next chat.
+  5. Three core files to read next.

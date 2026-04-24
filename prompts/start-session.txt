@@ -1,0 +1,32 @@
+Start in session recovery mode.
+
+First read the files below and recover the current state:
+- docs/ai/project_memory.md
+- docs/ai/change_playbook.md, if present
+- docs/ai/current_state.md
+- docs/ai/agent_memory.md, if present
+- docs/ai/user_preferences.md, if present
+- The latest handoff, if needed
+- The current work's related spec/plan docs, if needed
+
+If .ai-index/ exists, use it to narrow the relevant handoff / spec / plan docs first when possible, but always read the core files above directly.
+- "Current objective"
+- "Next actions"
+- "Open risks / questions"
+- Two or three feature keywords related to the current work
+
+Output only this structure:
+1. Current objective
+2. Confirmed from docs
+3. Confirmed from live workspace
+4. Unknown or risky points
+5. Next smallest steps
+6. Verification plan
+
+Important:
+- Clearly separate what was confirmed from docs from what was confirmed directly in the live workspace.
+- Mark assumptions explicitly.
+- In project_memory.md, prioritize structure, source-of-truth rules, and change impact rules.
+- In change_playbook.md, use only the change checklist directly relevant to this work.
+
+Do not implement now. Recover state only.

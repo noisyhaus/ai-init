@@ -1,0 +1,18 @@
+Start a new project.
+
+Do not implement yet. Do only the following:
+1. Tailor AGENTS.md to this project.
+2. Draft docs/ai/project_memory.md.
+3. Draft docs/ai/change_playbook.md.
+4. Draft docs/ai/current_state.md.
+5. If docs/ai/agent_memory.md and docs/ai/user_preferences.md were generated, confirm their structure even if they stay empty.
+6. Use a brainstorming-style pass to define MVP scope, objective, and success criteria.
+7. When the design is clear, save it under docs/superpowers/specs.
+8. Then save the first implementation plan under docs/superpowers/plans.
+   - If a local planning skill such as writing-plans or plan exists, use it.
+   - Otherwise include objective, scope, work breakdown, touched files, verification, risks, and the first task.
+
+Important:
+- project_memory.md must include at least Project Summary / System Structure / Canonical Sources / Change Impact Rules.
+- Keep change_playbook.md concise. Start with checklists for change types that are likely to recur in this project.
+- Keep Core Engineering Invariants (SSoT/SRP/Consistency/Atomicity/Idempotency/No Silent Fallback) short in AGENTS.md; put detailed checks in project_memory/change_playbook.

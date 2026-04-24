@@ -1,0 +1,235 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+STARTER_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+TEMPLATES_DIR="$STARTER_DIR/templates"
+
+force=0
+with_rules=0
+with_memory_plus=0
+with_local_recall=0
+mode="auto"
+print_prompt=0
+
+usage() {
+  cat <<'USAGE'
+Usage: ai-init [--force] [--with-rules] [--with-memory-plus] [--with-local-recall] [--new-project|--existing-project|--auto] [--print-prompt] [--help]
+
+Create a reusable per-project Codex/free-code starter in the current directory.
+
+Options:
+  --force       Overwrite existing starter files
+  --with-rules  Also create starter rule files under docs/ai/rules/
+  --with-memory-plus
+                Also create docs/ai/agent_memory.md and docs/ai/user_preferences.md
+  --with-local-recall
+                Also create a local SQLite FTS recall scaffold under .ai-index/ and scripts/ai-index.py
+  --new-project Treat this directory as a new project when printing next-step guidance
+  --existing-project
+                Treat this directory as an existing project when printing next-step guidance
+  --auto        Infer new vs existing project from current files (default)
+  --print-prompt
+                Print only the recommended follow-up prompt for free-code/Codex CLI
+  --help        Show this help message
+USAGE
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --force)
+      force=1
+      ;;
+    --with-rules)
+      with_rules=1
+      ;;
+    --with-memory-plus)
+      with_memory_plus=1
+      ;;
+    --with-local-recall)
+      with_local_recall=1
+      with_memory_plus=1
+      ;;
+    --new-project)
+      mode="new"
+      ;;
+    --existing-project)
+      mode="existing"
+      ;;
+    --auto)
+      mode="auto"
+      ;;
+    --print-prompt)
+      print_prompt=1
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      printf 'Unknown option: %s\n\n' "$1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+project_name="$(basename "$PWD")"
+project_name_escaped="$(printf '%s' "$project_name" | sed 's/[\\/&]/\\&/g')"
+
+has_project_files=0
+if [ -f "README.md" ] || [ -d "src" ] || [ -d "app" ] || [ -d "apps" ] || [ -d "tests" ] || [ -d ".git" ]; then
+  has_project_files=1
+fi
+
+resolved_mode="$mode"
+if [ "$resolved_mode" = "auto" ]; then
+  if [ "$has_project_files" -eq 1 ]; then
+    resolved_mode="existing"
+  else
+    resolved_mode="new"
+  fi
+fi
+
+print_new_project_prompt() {
+  cat <<'PROMPT'
+Start a new project.
+
+Do not implement yet. Do only the following:
+1. Tailor AGENTS.md to this project.
+2. Draft or improve docs/ai/project_memory.md.
+3. Draft or improve docs/ai/change_playbook.md.
+4. Draft or improve docs/ai/current_state.md.
+5. If docs/ai/agent_memory.md and docs/ai/user_preferences.md were generated, confirm their structure even if they stay empty.
+6. Use a brainstorming-style pass to define MVP scope, objective, and success criteria.
+7. When the design is clear, save it under docs/superpowers/specs.
+8. Then save the first implementation plan under docs/superpowers/plans.
+   - If a local planning skill such as writing-plans or plan exists, use it.
+   - Otherwise include objective, scope, work breakdown, touched files, verification, risks, and the first task.
+
+Notes:
+- Source of truth is always markdown docs.
+- Keep Core Engineering Invariants (SSoT/SRP/Consistency/Atomicity/Idempotency/No Silent Fallback) concise in AGENTS.md; put detailed checks in project_memory/change_playbook.
+- project_memory.md carries durable structure and canonical sources.
+- change_playbook.md carries change checklists and verification expectations.
+- If you later add local recall, treat it as a recall cache only.
+PROMPT
+}
+
+print_existing_project_prompt() {
+  cat <<'PROMPT'
+This project is already in progress.
+
+Do not implement yet. Proceed in this order:
+1. Understand the project state from the current codebase, README, run commands, and recent work evidence.
+2. Classify information into four buckets:
+   - Belongs in AGENTS.md.
+   - Belongs in docs/ai/project_memory.md.
+   - Belongs in docs/ai/change_playbook.md.
+   - Does not need documentation.
+3. If present, also classify:
+   - Belongs in docs/ai/agent_memory.md.
+   - Belongs in docs/ai/user_preferences.md.
+4. Separate facts confirmed from docs from facts confirmed in the live workspace.
+5. Based on that classification, draft a short AGENTS.md.
+6. Draft or improve docs/ai/project_memory.md.
+7. Draft or improve docs/ai/change_playbook.md.
+8. Write docs/ai/current_state.md for the current moment.
+9. If memory-plus is in use, draft agent_memory.md and user_preferences.md.
+10. Based on only one active piece of work, summarize the next one to three actions.
+
+Important:
+- Keep AGENTS.md short and forceful.
+- Keep Core Engineering Invariants (SSoT/SRP/Consistency/Atomicity/Idempotency/No Silent Fallback) short in AGENTS.md; put detailed checks in project_memory/change_playbook.
+- Keep only structure, standards, source of truth, and change impact in project_memory.md.
+- Keep only change procedures and verification checklists in change_playbook.md.
+- Write only conservatively confirmed current facts in current_state.md.
+PROMPT
+}
+
+print_followup_prompt() {
+  if [ "$resolved_mode" = "existing" ]; then
+    print_existing_project_prompt
+  else
+    print_new_project_prompt
+  fi
+}
+
+if [ "$print_prompt" -eq 1 ]; then
+  print_followup_prompt
+  exit 0
+fi
+
+render_template() {
+  local template="$1"
+  local target="$2"
+
+  mkdir -p "$(dirname "$target")"
+
+  if [ -e "$target" ] && [ "$force" -ne 1 ]; then
+    printf 'skip  %s (already exists)\n' "$target"
+    return
+  fi
+
+  sed "s/__PROJECT_NAME__/${project_name_escaped}/g" "$template" > "$target"
+  printf 'write %s\n' "$target"
+}
+
+mkdir -p docs/ai/handoffs docs/ai/tasks docs/adr docs/superpowers/specs docs/superpowers/plans
+printf 'mkdir %s\n' docs/ai/handoffs
+printf 'mkdir %s\n' docs/ai/tasks
+printf 'mkdir %s\n' docs/adr
+printf 'mkdir %s\n' docs/superpowers/specs
+printf 'mkdir %s\n' docs/superpowers/plans
+
+render_template "$TEMPLATES_DIR/AGENTS.md" "AGENTS.md"
+render_template "$TEMPLATES_DIR/README.md" "README.md"
+render_template "$TEMPLATES_DIR/project_memory.md" "docs/ai/project_memory.md"
+render_template "$TEMPLATES_DIR/change_playbook.md" "docs/ai/change_playbook.md"
+render_template "$TEMPLATES_DIR/current_state.md" "docs/ai/current_state.md"
+
+if [ "$with_memory_plus" -eq 1 ]; then
+  render_template "$TEMPLATES_DIR/agent_memory.md" "docs/ai/agent_memory.md"
+  render_template "$TEMPLATES_DIR/user_preferences.md" "docs/ai/user_preferences.md"
+fi
+
+if [ "$with_rules" -eq 1 ]; then
+  mkdir -p docs/ai/rules
+  printf 'mkdir %s\n' docs/ai/rules
+  render_template "$TEMPLATES_DIR/rules-web-frontend.md" "docs/ai/rules/web-frontend.md"
+  render_template "$TEMPLATES_DIR/rules-ui-ux.md" "docs/ai/rules/ui-ux.md"
+  render_template "$TEMPLATES_DIR/rules-backend-api.md" "docs/ai/rules/backend-api.md"
+  render_template "$TEMPLATES_DIR/rules-automation.md" "docs/ai/rules/automation.md"
+  render_template "$TEMPLATES_DIR/rules-testing.md" "docs/ai/rules/testing.md"
+fi
+
+if [ "$with_local_recall" -eq 1 ]; then
+  mkdir -p .ai-index scripts
+  printf 'mkdir %s\n' .ai-index
+  printf 'mkdir %s\n' scripts
+  render_template "$TEMPLATES_DIR/ai-index.README.md" ".ai-index/README.md"
+  render_template "$TEMPLATES_DIR/ai-index.gitignore" ".ai-index/.gitignore"
+  render_template "$TEMPLATES_DIR/ai-index.py" "scripts/ai-index.py"
+fi
+
+cat <<NEXT
+
+ai-init complete for: $project_name
+mode: $resolved_mode
+
+Suggested next step for free-code / Codex CLI:
+NEXT
+print_followup_prompt
+
+if [ "$with_local_recall" -eq 1 ]; then
+  cat <<RECALL
+
+Local recall scaffold enabled.
+
+Suggested local recall commands:
+  python scripts/ai-index.py rebuild
+  python scripts/ai-index.py search "Current objective"
+  python scripts/ai-index.py update
+RECALL
+fi

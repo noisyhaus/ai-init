@@ -1,0 +1,28 @@
+I want to add a new feature to this project.
+
+Do not implement first. Proceed in this order:
+1. Summarize how the current docs (project_memory, change_playbook, current_state, and relevant spec/plan) connect to this feature.
+2. Write a brief Invariant Impact note.
+   - SSoT: canonical truth owner, cache/index/generated-output derivation, and self-heal rule on misses.
+   - SRP: module/file/function that will own the new responsibility.
+   - Consistency: data/state/schema/UI/docs/tests/generated outputs that must stay aligned.
+   - Atomicity: how partial states will be prevented from leaking.
+   - Idempotency: final state after repeating the same operation.
+   - No Silent Fallback: observable failures and whether explicit failover exists.
+3. Use a brainstorming-style pass to clarify objective, scope, non-scope, success criteria, and constraints.
+4. Draft the design and summarize key options and tradeoffs.
+5. If useful, ask agent-council for additional review of:
+   - Missing requirements.
+   - Over-scoped areas.
+   - Risky design choices.
+   - Test, rollback, and operational risks.
+   - Simpler alternatives.
+6. Save the design result under docs/superpowers/specs.
+7. Save the implementation plan under docs/superpowers/plans.
+   - If a local planning skill such as writing-plans or plan exists, use it.
+   - Otherwise include objective, scope, work breakdown, touched files, verification, risks, and the first task.
+8. Propose only the first execution task.
+
+Principles:
+- Apply SSoT, SRP, Consistency, Atomicity, Idempotency, and No Silent Fallback to every new or changed surface.
+- Record unrelated pre-existing violations without widening the scope.
