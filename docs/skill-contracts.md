@@ -12,7 +12,7 @@ Use it when the user asks to initialize a project, bootstrap starter docs, print
 
 Contract:
 
-- Execute the local `ai-init` command.
+- Execute the installed local `ai-init` command through the bundled helper script when the user invokes `$ai-init` in Codex.
 - Read command output instead of paraphrasing from memory.
 - Verify expected files/directories after normal scaffold runs.
 - Recommend the exact next prompt emitted by the command.

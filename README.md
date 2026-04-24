@@ -2,15 +2,33 @@
 
 [Korean](README.ko.md)
 
-`ai-init` is a markdown-first project memory system and Codex skill pack for reliable multi-session AI coding.
+`ai-init` is a markdown-first bootstrap system for Codex projects.
 
-It gives coding agents a small, durable operating surface before they start changing code: project memory, change rules, current state, handoffs, specs, plans, and lifecycle skills that know when to recover context, start work, close a session, and finish a branch.
+It packages three things together:
+
+- one installable Codex skill: `ai-init`
+- one local scaffold command: `ai-init`
+- one durable project-memory layout for multi-session AI coding
 
 The goal is simple: stop treating chat history as the source of truth.
 
+## Quick Start
+
+```sh
+git clone https://github.com/noisyhaus/ai-init.git
+cd ai-init
+./install.sh
+```
+
+Then open Codex in the project you want to initialize and run:
+
+```text
+$ai-init
+```
+
 ## How It Works
 
-`ai-init` starts by creating a lightweight documentation scaffold inside the target project. The scaffold gives your coding agent a place to store durable context instead of rediscovering the same project facts every session.
+`ai-init` starts by creating a lightweight documentation scaffold inside the target project. That scaffold gives your coding agent a durable working surface instead of forcing it to rediscover the same project facts every session.
 
 From there, the skills provide a lifecycle:
 
@@ -35,31 +53,30 @@ git clone https://github.com/noisyhaus/ai-init.git
 cd ai-init
 ```
 
-Run the CLI from this checkout:
+Install the public package from this checkout:
 
 ```sh
-./bin/ai-init --help
+./install.sh
 ```
 
-Optionally put it on your `PATH`:
+This creates two local install links:
 
-```sh
-mkdir -p "$HOME/.local/bin"
-ln -sf "$PWD/bin/ai-init" "$HOME/.local/bin/ai-init"
-```
-
-Install the Codex skill manually:
-
-```sh
-mkdir -p "$HOME/.codex/skills"
-cp -R skills/ai-init "$HOME/.codex/skills/"
-```
+- `~/.codex/skills/ai-init` -> `<repo>/skills/ai-init`
+- `~/.local/bin/ai-init` -> `<repo>/bin/ai-init`
 
 See [docs/install.md](docs/install.md) for details.
 
 ## Basic Usage
 
-Run from the project you want to initialize:
+Start Codex in the project you want to initialize, then use the skill entrypoint:
+
+```text
+$ai-init
+```
+
+The installed skill calls the local `ai-init` command for you. The skill is the Codex entrypoint; the command is the fixed scaffold generator.
+
+You can still run the CLI directly when needed:
 
 ```sh
 ai-init
@@ -69,12 +86,6 @@ For a new project:
 
 ```sh
 ai-init --new-project
-```
-
-For an existing project:
-
-```sh
-ai-init --existing-project
 ```
 
 Optional scaffolds:
@@ -128,32 +139,30 @@ First-time user flow:
               |
               v
 +----------------------------+
-| 2. Install CLI + one skill |
-|    skills/ai-init          |
+| 2. Run: ./install.sh       |
 +-------------+--------------+
               |
               v
 +----------------------------+
 | 3. cd target project       |
-|    run: ai-init            |
+|    start Codex             |
 +-------------+--------------+
               |
               v
 +----------------------------+
-| 4. Paste printed prompt    |
-|    into Codex              |
+| 4. Type: $ai-init          |
 +-------------+--------------+
               |
               v
 +----------------------------+
-| 5. Codex reads markdown    |
-|    source-of-truth files   |
+| 5. Skill runs local        |
+|    ai-init scaffold        |
 +-------------+--------------+
               |
               v
 +----------------------------+
-| 6. Start work with the     |
-|    ai-init lifecycle       |
+| 6. Codex follows printed   |
+|    prompt + lifecycle      |
 +----------------------------+
 ```
 
@@ -177,6 +186,8 @@ See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed lifecycl
 ### CLI
 
 - `bin/ai-init` - idempotent scaffold generator for project docs and planning folders.
+- `install.sh` - installs the public skill and local CLI with stable symlinks.
+- `uninstall.sh` - removes those public install targets without deleting the repo checkout.
 - `prompts/` - follow-up prompts for new projects, existing projects, feature addition, session recovery, and session close.
 - `templates/` - generated files written into downstream projects.
 
@@ -218,6 +229,7 @@ If a project already uses Superpowers, `ai-init` can share the same document lay
 Run verification before publishing changes:
 
 ```sh
+./tests/install-script-test.sh
 ./tests/ai-init-output-test.sh
 git diff --check
 rg -n "\p{Hangul}" . -g '!README.ko.md'
@@ -251,7 +263,7 @@ Do not run `ai-init --force` in this repository root. Test scaffold behavior in 
 
 ## Status
 
-Early public packaging work. The current repository contains the local working implementation and Codex skills intended for source-first distribution.
+This repository is the public source package for `ai-init`. Clone it, install from it, update it with `git pull`, and reinstall if you move the checkout.
 
 ## License
 

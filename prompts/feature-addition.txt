@@ -11,7 +11,7 @@ Do not implement first. Proceed in this order:
    - No Silent Fallback: observable failures and whether explicit failover exists.
 3. Use a brainstorming-style pass to clarify objective, scope, non-scope, success criteria, and constraints.
 4. Draft the design and summarize key options and tradeoffs.
-5. If useful, ask agent-council for additional review of:
+5. Pressure-test the design yourself for:
    - Missing requirements.
    - Over-scoped areas.
    - Risky design choices.

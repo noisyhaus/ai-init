@@ -1,6 +1,6 @@
 # ai-init Usage
 
-This guide is the concise command reference for using `ai-init` from a source checkout.
+This guide is the concise command reference for the public `ai-init` install. In practice, you install one Codex skill plus one local scaffold command, then enter through `$ai-init` inside Codex.
 
 For installation details, see [docs/install.md](docs/install.md).
 
@@ -11,35 +11,30 @@ git clone https://github.com/noisyhaus/ai-init.git
 cd ai-init
 ```
 
-Run the CLI directly:
+Install from the cloned repository:
 
 ```sh
-./bin/ai-init --help
+./install.sh
 ```
 
-Optionally put it on your `PATH`:
+This installs:
 
-```sh
-mkdir -p "$HOME/.local/bin"
-ln -sf "$PWD/bin/ai-init" "$HOME/.local/bin/ai-init"
-```
-
-Install the Codex skill:
-
-```sh
-mkdir -p "$HOME/.codex/skills"
-cp -R skills/ai-init "$HOME/.codex/skills/"
-```
+- `~/.codex/skills/ai-init`
+- `~/.local/bin/ai-init`
 
 ## Basic Flow
 
-Run `ai-init` from the project you want to initialize:
+From the project you want to initialize:
+
+1. Start Codex in that directory.
+2. Type `$ai-init`.
+3. Let the skill run the local `ai-init` scaffold command.
+
+You can still run the CLI directly when you want the raw scaffold output:
 
 ```sh
 ai-init
 ```
-
-Then give the printed follow-up prompt to your coding agent so it can tailor the generated docs to the project before implementation starts.
 
 ## Commands
 
@@ -103,7 +98,7 @@ Rule packs:
 
 ## Skill Workflow
 
-After installing the `ai-init` skill into `~/.codex/skills`, use `$ai-init` as the single entrypoint in Codex.
+After running `./install.sh`, use `$ai-init` as the single entrypoint in Codex.
 
 The lifecycle routes inside the skill are:
 
@@ -146,6 +141,7 @@ Session close should:
 Run these checks before publishing changes to this repository:
 
 ```sh
+./tests/install-script-test.sh
 ./tests/ai-init-output-test.sh
 git diff --check
 rg -n "\p{Hangul}" . -g '!README.ko.md'

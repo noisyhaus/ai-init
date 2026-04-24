@@ -33,7 +33,7 @@ Do not jump straight into code.
    - what required state, permissions, identifiers, storage, events, and async control must exist
    - whether the current design actually provides them
    - if something is missing, classify it as impossible vs. merely inconvenient
-8. If the work is high-risk, ambiguous, or broadly cross-cutting, optionally use `agent-council` to pressure-test:
+8. Pressure-test the design yourself before saving it:
    - missing requirements
    - scope bloat
    - risky design choices

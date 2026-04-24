@@ -9,44 +9,34 @@ git clone https://github.com/noisyhaus/ai-init.git
 cd ai-init
 ```
 
-## Run From This Checkout
+## Install From This Checkout
 
 ```sh
-./bin/ai-init --help
+./install.sh
 ```
 
-Initialize a target project from inside that project:
+The installer creates these local links:
 
-```sh
-/path/to/ai-init/bin/ai-init
-```
-
-## Add the CLI to PATH
-
-```sh
-mkdir -p "$HOME/.local/bin"
-ln -sf "$PWD/bin/ai-init" "$HOME/.local/bin/ai-init"
-```
-
-Then run:
-
-```sh
-ai-init --help
-```
-
-## Install the Codex Skill
-
-Copy the single public `ai-init` skill:
-
-```sh
-mkdir -p "$HOME/.codex/skills"
-cp -R skills/ai-init "$HOME/.codex/skills/"
-```
+- `~/.codex/skills/ai-init` -> `<repo>/skills/ai-init`
+- `~/.local/bin/ai-init` -> `<repo>/bin/ai-init`
 
 ## Use In a Project
 
 ```sh
 cd /path/to/target-project
+```
+
+Start Codex in that directory and type:
+
+```text
+$ai-init
+```
+
+The skill calls the local `ai-init` command through `skills/ai-init/scripts/run-ai-init.sh`.
+
+You can still run the CLI directly when needed:
+
+```sh
 ai-init
 ```
 
@@ -71,23 +61,15 @@ From the cloned repository:
 
 ```sh
 git pull --ff-only
-cp -R skills/ai-init "$HOME/.codex/skills/"
+./install.sh
 ```
 
-If you symlinked `bin/ai-init` into `~/.local/bin`, the CLI updates with the repository checkout.
+If you already installed with `./install.sh`, the update step just refreshes the same symlink targets.
 
 ## Uninstall
 
-Remove the CLI symlink if you created one:
-
 ```sh
-rm -f "$HOME/.local/bin/ai-init"
-```
-
-Remove the installed skill:
-
-```sh
-rm -rf "$HOME/.codex/skills/ai-init"
+./uninstall.sh
 ```
 
 Private note-taking integrations are intentionally excluded from the public core package.
