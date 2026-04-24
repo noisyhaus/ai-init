@@ -1,5 +1,7 @@
 # ai-init
 
+[Korean](README.ko.md)
+
 `ai-init` is a markdown-first project memory system and Codex skill pack for reliable multi-session AI coding.
 
 It gives coding agents a small, durable operating surface before they start changing code: project memory, change rules, current state, handoffs, specs, plans, and lifecycle skills that know when to recover context, start work, close a session, and finish a branch.
@@ -188,7 +190,7 @@ Run verification before publishing changes:
 ```sh
 ./tests/ai-init-output-test.sh
 git diff --check
-rg -n "\p{Hangul}" .
+rg -n "\p{Hangul}" . -g '!README.ko.md'
 rg -n -i "o[b]sidian|w[i]ki|with-w[i]ki|w[i]ki-sync|w[i]ki-hook" .
 ```
 
