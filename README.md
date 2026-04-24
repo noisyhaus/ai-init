@@ -1,16 +1,40 @@
+![ai-init](assets/ai-init.jpg)
+
 # ai-init
 
 [Korean](README.ko.md)
 
-`ai-init` is a markdown-first bootstrap system for Codex projects.
+`ai-init` is a markdown-first operating layer for Codex projects.
 
-It packages three things together:
-
-- an installable Codex skill set: `ai-init` plus direct lifecycle skills
-- one local scaffold command: `ai-init`
-- one durable project-memory layout for multi-session AI coding
+It gives your coding agent a durable project memory, a repeatable work lifecycle, and direct Codex skills for the moments that usually break down across long AI-assisted development sessions: starting work, adding features, fixing bugs, recovering context, closing a session, and finishing a branch.
 
 The goal is simple: stop treating chat history as the source of truth.
+
+## Philosophy
+
+`ai-init` is built around a few strict preferences:
+
+- **Markdown over memory** - project docs are the source of truth, not the current chat window.
+- **Recovery before action** - the agent should rebuild context before changing code.
+- **Spec and plan before feature code** - new behavior needs a written target before implementation.
+- **Reproduce before fixing** - bugfixes start from evidence, not guesses.
+- **Git evidence before session close** - handoffs and commits should come from the real diff.
+- **Small reversible changes** - prefer narrow, reviewable steps over broad rewrites.
+- **Optional integrations stay optional** - the public core works without Obsidian, hosted services, or private tooling.
+
+## Skill Map
+
+Installing this repository exposes the following Codex skills:
+
+| Skill | Purpose |
+| --- | --- |
+| `$ai-init` | Bootstrap a project with durable AI working docs and print the next Codex prompt. |
+| `$ai-init-session-recovery` | Rebuild current context from markdown docs and live workspace evidence before implementation. |
+| `$ai-init-start-work` | Inspect Git state and prepare the correct branch/lane before starting work. |
+| `$ai-init-feature-addition` | Turn a feature request into a spec and implementation plan before code. |
+| `$ai-init-bugfix` | Reproduce, diagnose, fix, and verify broken existing behavior. |
+| `$ai-init-session-close` | Close a session from Git evidence and write a usable next-session handoff. |
+| `$ai-init-finish-work` | Decide what is safe to stage, commit, push, or merge after work is verified. |
 
 ## Quick Start
 
@@ -26,7 +50,7 @@ Then open Codex in the project you want to initialize and run:
 $ai-init
 ```
 
-After installation you can also invoke lifecycle skills directly:
+Or invoke a lifecycle skill directly:
 
 ```text
 $ai-init-start-work
@@ -237,16 +261,6 @@ The feature-addition lifecycle uses a markdown-compatible spec/plan layout:
 - `docs/superpowers/plans/`
 
 If a project already uses Superpowers, `ai-init` can share the same document layout. If not, the workflow still works with plain markdown files. Superpowers-specific behavior should remain an optional adapter, not a hard dependency in the public core.
-
-## Philosophy
-
-- Markdown is the source of truth.
-- Recovery before implementation.
-- Specs and plans before feature code.
-- Evidence before completion claims.
-- Git evidence before session close.
-- Small, reversible changes over broad rewrites.
-- Optional integrations should not become hidden requirements.
 
 ## Maintainer Workflow
 
