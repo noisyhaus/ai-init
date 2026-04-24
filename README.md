@@ -209,42 +209,63 @@ In practice, the generated `AGENTS.md` makes a blank or existing repository beha
 
 ## The Basic Workflow
 
-First-time user flow:
+First-time project flow:
 
 ```text
-+----------------------------+
-| 1. Clone noisyhaus/ai-init |
-+-------------+--------------+
-              |
-              v
-+----------------------------+
-| 2. Run: ./install.sh       |
-+-------------+--------------+
-              |
-              v
-+----------------------------+
-| 3. cd target project       |
-|    start Codex             |
-+-------------+--------------+
-              |
-              v
-+----------------------------+
-| 4. Type a skill command    |
-|    for the current lane    |
-+-------------+--------------+
-              |
-              v
-+----------------------------+
-| 5. Skill runs local        |
-|    ai-init scaffold        |
-+-------------+--------------+
-              |
-              v
-+----------------------------+
-| 6. Codex follows printed   |
-|    prompt or direct lane   |
-+----------------------------+
++--------------------------------+
+| 1. Create a new project folder |
+|    or open an existing project |
++---------------+----------------+
+                |
+                v
++--------------------------------+
+| 2. Start Codex in that folder  |
+|    Run: $ai-init               |
++---------------+----------------+
+                |
+                v
++--------------------------------+
+| 3. ai-init writes onboarding   |
+|    docs and AGENTS.md          |
++---------------+----------------+
+                |
+                v
++--------------------------------+
+| 4. Recover session context     |
+|    Run: $ai-init-session-      |
+|    recovery                    |
++---------------+----------------+
+                |
+                v
++--------------------------------+
+| 5. Do one work lane            |
+|    Feature: $ai-init-feature-  |
+|    addition                    |
+|    Bugfix:  $ai-init-bugfix    |
++---------------+----------------+
+                |
+                v
++--------------------------------+
+| 6. Close the session           |
+|    Run: $ai-init-session-close |
++---------------+----------------+
+                |
+                v
++--------------------------------+
+| 7. Finish branch when ready    |
+|    Run: $ai-init-finish-work   |
++---------------+----------------+
+                |
+                v
+        +----------------+
+        | Next session?  |
+        +-------+--------+
+                |
+                v
+     Repeat steps 4 -> 6
 ```
+
+Use `$ai-init` once per project to create the onboarding scaffold. After that, the normal daily loop is recovery, one focused work lane, then session close. Run `$ai-init-finish-work` when the branch is actually ready to stage, commit, push, or merge.
 
 Installed public commands:
 
