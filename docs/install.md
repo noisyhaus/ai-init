@@ -17,8 +17,14 @@ cd ai-init
 
 The installer creates these local links:
 
-- `~/.codex/skills/ai-init` -> `<repo>/skills/ai-init`
-- `~/.local/bin/ai-init` -> `<repo>/bin/ai-init`
+- `~/.codex/skills/ai-init`
+- `~/.codex/skills/ai-init-start-work`
+- `~/.codex/skills/ai-init-feature-addition`
+- `~/.codex/skills/ai-init-bugfix`
+- `~/.codex/skills/ai-init-session-recovery`
+- `~/.codex/skills/ai-init-session-close`
+- `~/.codex/skills/ai-init-finish-work`
+- `~/.local/bin/ai-init`
 
 ## Use In a Project
 
@@ -32,7 +38,18 @@ Start Codex in that directory and type:
 $ai-init
 ```
 
-The skill calls the local `ai-init` command through `skills/ai-init/scripts/run-ai-init.sh`.
+Or call a lifecycle skill directly:
+
+```text
+$ai-init-start-work
+$ai-init-feature-addition
+$ai-init-bugfix
+$ai-init-session-recovery
+$ai-init-session-close
+$ai-init-finish-work
+```
+
+The bootstrap skill calls the local `ai-init` command through `skills/ai-init/scripts/run-ai-init.sh`.
 
 You can still run the CLI directly when needed:
 
@@ -64,7 +81,7 @@ git pull --ff-only
 ./install.sh
 ```
 
-If you already installed with `./install.sh`, the update step just refreshes the same symlink targets.
+If you already installed with `./install.sh`, the update step just refreshes the same skill and CLI symlink targets.
 
 ## Uninstall
 

@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SKILL_TARGET="$HOME/.codex/skills/ai-init"
 CLI_TARGET="$HOME/.local/bin/ai-init"
+SKILL_TARGET_ROOT="$HOME/.codex/skills"
+SKILL_NAMES=(
+  ai-init
+  ai-init-start-work
+  ai-init-feature-addition
+  ai-init-bugfix
+  ai-init-session-recovery
+  ai-init-session-close
+  ai-init-finish-work
+  ai-init-pressure-test
+)
 
 usage() {
   cat <<'USAGE'
 Usage: ./uninstall.sh [--help]
 
 Remove the public ai-init install targets if they are symlinks:
-  ~/.codex/skills/ai-init
+  ~/.codex/skills/ai-init*
   ~/.local/bin/ai-init
 USAGE
 }
@@ -46,7 +56,10 @@ remove_symlink() {
   printf 'skip  %s (not installed)\n' "$target"
 }
 
-remove_symlink "$SKILL_TARGET"
+for skill_name in "${SKILL_NAMES[@]}"; do
+  remove_symlink "$SKILL_TARGET_ROOT/$skill_name"
+done
+
 remove_symlink "$CLI_TARGET"
 
 cat <<EOF

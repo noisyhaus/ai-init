@@ -8,6 +8,15 @@ INSTALL_LOG="$ROOT_DIR/tests/.tmp-install.log"
 REINSTALL_LOG="$ROOT_DIR/tests/.tmp-reinstall.log"
 BOOTSTRAP_LOG="$ROOT_DIR/tests/.tmp-bootstrap.log"
 UNINSTALL_LOG="$ROOT_DIR/tests/.tmp-uninstall.log"
+SKILL_NAMES=(
+  ai-init
+  ai-init-start-work
+  ai-init-feature-addition
+  ai-init-bugfix
+  ai-init-session-recovery
+  ai-init-session-close
+  ai-init-finish-work
+)
 
 cleanup() {
   rm -rf "$TMP_HOME" "$TMP_PROJECT"
@@ -44,15 +53,23 @@ assert_symlink_target() {
   fi
 }
 
+mkdir -p "$TMP_HOME/.codex/skills"
+ln -s "$ROOT_DIR/skills/ai-init" "$TMP_HOME/.codex/skills/ai-init-pressure-test"
+
 HOME="$TMP_HOME" "$ROOT_DIR/install.sh" > "$INSTALL_LOG"
 
 assert_contains "$INSTALL_LOG" 'ai-init install complete.'
-assert_contains "$INSTALL_LOG" 'Type: $ai-init'
-assert_symlink_target "$TMP_HOME/.codex/skills/ai-init" "$ROOT_DIR/skills/ai-init"
+assert_contains "$INSTALL_LOG" 'ai-init-pressure-test (legacy)'
+assert_contains "$INSTALL_LOG" '     - $ai-init'
 assert_symlink_target "$TMP_HOME/.local/bin/ai-init" "$ROOT_DIR/bin/ai-init"
+for skill_name in "${SKILL_NAMES[@]}"; do
+  assert_symlink_target "$TMP_HOME/.codex/skills/$skill_name" "$ROOT_DIR/skills/$skill_name"
+done
+test ! -e "$TMP_HOME/.codex/skills/ai-init-pressure-test"
 
 HOME="$TMP_HOME" "$ROOT_DIR/install.sh" > "$REINSTALL_LOG"
 assert_contains "$REINSTALL_LOG" 'ok    '
+assert_contains "$REINSTALL_LOG" '$ai-init-feature-addition'
 
 cd "$TMP_PROJECT"
 HOME="$TMP_HOME" "$TMP_HOME/.codex/skills/ai-init/scripts/run-ai-init.sh" --new-project > "$BOOTSTRAP_LOG"
@@ -71,7 +88,9 @@ test -d docs/superpowers/plans
 HOME="$TMP_HOME" "$ROOT_DIR/uninstall.sh" > "$UNINSTALL_LOG"
 assert_contains "$UNINSTALL_LOG" 'ai-init uninstall complete.'
 
-test ! -e "$TMP_HOME/.codex/skills/ai-init"
 test ! -e "$TMP_HOME/.local/bin/ai-init"
+for skill_name in "${SKILL_NAMES[@]}"; do
+  test ! -e "$TMP_HOME/.codex/skills/$skill_name"
+done
 
 printf 'ai-init install script test passed\n'

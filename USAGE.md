@@ -1,6 +1,6 @@
 # ai-init Usage
 
-This guide is the concise command reference for the public `ai-init` install. In practice, you install one Codex skill plus one local scaffold command, then enter through `$ai-init` inside Codex.
+This guide is the concise command reference for the public `ai-init` install. In practice, you install a Codex skill set plus one local scaffold command, then enter through the skill that matches the current lane inside Codex.
 
 For installation details, see [docs/install.md](docs/install.md).
 
@@ -20,6 +20,12 @@ Install from the cloned repository:
 This installs:
 
 - `~/.codex/skills/ai-init`
+- `~/.codex/skills/ai-init-start-work`
+- `~/.codex/skills/ai-init-feature-addition`
+- `~/.codex/skills/ai-init-bugfix`
+- `~/.codex/skills/ai-init-session-recovery`
+- `~/.codex/skills/ai-init-session-close`
+- `~/.codex/skills/ai-init-finish-work`
 - `~/.local/bin/ai-init`
 
 ## Basic Flow
@@ -27,8 +33,18 @@ This installs:
 From the project you want to initialize:
 
 1. Start Codex in that directory.
-2. Type `$ai-init`.
-3. Let the skill run the local `ai-init` scaffold command.
+2. Type the command that matches the lane.
+3. Let the selected skill follow the shared ai-init workflow.
+
+Common entrypoints:
+
+- `$ai-init`
+- `$ai-init-start-work`
+- `$ai-init-feature-addition`
+- `$ai-init-bugfix`
+- `$ai-init-session-recovery`
+- `$ai-init-session-close`
+- `$ai-init-finish-work`
 
 You can still run the CLI directly when you want the raw scaffold output:
 
@@ -98,18 +114,17 @@ Rule packs:
 
 ## Skill Workflow
 
-After running `./install.sh`, use `$ai-init` as the single entrypoint in Codex.
+After running `./install.sh`, Codex can see both the bootstrap skill and the direct lifecycle skills.
 
-The lifecycle routes inside the skill are:
+- `$ai-init` - bootstrap and orient a project.
+- `$ai-init-session-recovery` - recover context at the start of a new chat or resumed task.
+- `$ai-init-start-work` - prepare the Git lane before implementation.
+- `$ai-init-feature-addition` - write feature spec and plan artifacts before coding.
+- `$ai-init-bugfix` - reproduce, diagnose, fix, and verify a bug.
+- `$ai-init-session-close` - close a session from Git evidence.
+- `$ai-init-finish-work` - wrap a completed lane for commit, push, or merge readiness.
 
-- `bootstrap` - bootstrap and orient a project.
-- `session recovery` - recover context at the start of a new chat or resumed task.
-- `start work` - prepare the Git lane before implementation.
-- `feature addition` - write feature spec and plan artifacts before coding.
-- `bugfix` - reproduce, diagnose, fix, and verify a bug.
-- `pressure test` - generate a cross-agent review prompt.
-- `session close` - close a session from Git evidence.
-- `finish work` - wrap a completed lane for commit, push, or merge readiness.
+The direct lifecycle skills are thin wrappers over the shared references in `skills/ai-init/references/`, so the package keeps one workflow contract while exposing multiple public commands.
 
 See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed lifecycle contracts.
 

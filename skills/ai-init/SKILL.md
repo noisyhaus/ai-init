@@ -1,15 +1,15 @@
 ---
 name: ai-init
-description: Use when the user says "ai-init", asks to bootstrap a project, recover ai-init project context, start feature or bugfix work, pressure-test a plan, close a session, or finish a branch using the ai-init lifecycle.
+description: Use when the user says "ai-init", asks to bootstrap a project, recover ai-init project context, start feature or bugfix work, close a session, or finish a branch using the ai-init lifecycle.
 ---
 
 # AI Init
 
-Use this skill as the single public Codex entrypoint for the `ai-init` project lifecycle.
+Use this skill as the primary public Codex entrypoint for the `ai-init` project lifecycle.
 
 The first problem this skill solves: when a user types `ai-init` in chat, Codex may treat it as a natural-language prompt instead of executing the local bootstrap command. This skill removes that ambiguity.
 
-The broader purpose: keep multi-session AI coding grounded in durable markdown context instead of chat history. This single skill owns bootstrap, context recovery, work intake, feature planning, bugfix discipline, pressure testing, session close, and branch finish workflows.
+The broader purpose: keep multi-session AI coding grounded in durable markdown context instead of chat history. This skill owns bootstrap, context recovery, work intake, feature planning, bugfix discipline, session close, and branch finish workflows, and the public package also ships direct lifecycle sibling skills for users who want explicit commands.
 
 ## When to use
 
@@ -21,9 +21,9 @@ Use this skill when the user:
 - wants `ai-init --print-prompt`, `--with-rules`, `--with-memory-plus`, or `--with-local-recall`
 - asks to recover context in an ai-init project
 - starts feature, UI, bugfix, or release-prep work
-- asks for feature planning, bugfix flow, pressure testing, session close, or finish-work handling
+- asks for feature planning, bugfix flow, session close, or finish-work handling
 
-Do not split public behavior across sibling `ai-init-*` skills. Lifecycle workflows live as references inside this skill.
+The public package may also expose sibling lifecycle skills such as `ai-init-feature-addition` or `ai-init-session-recovery`. Keep behavior centralized in the shared references so those direct commands stay consistent with `$ai-init`.
 
 ## Route the request
 
@@ -34,11 +34,10 @@ Choose the smallest matching workflow:
 - Start a new feature/UI/fix/release lane -> read `references/start-work.md`.
 - Add a feature -> read `references/feature-addition.md`.
 - Fix a bug or regression -> read `references/bugfix.md`.
-- Pressure-test a stage with another AI -> read `references/pressure-test.md`.
 - Close the current session -> read `references/session-close.md`.
 - Finish a lane for commit/push/merge readiness -> read `references/finish-work.md`.
 
-Treat lifecycle names as routes inside this `ai-init` skill, not as separate installable skills.
+Treat lifecycle names as both routes inside this `ai-init` skill and shared contracts for the direct sibling skills installed with the public package.
 
 ## Bootstrap Command
 
@@ -102,6 +101,5 @@ Use only the reference needed for the current route:
 - `references/start-work.md`
 - `references/feature-addition.md`
 - `references/bugfix.md`
-- `references/pressure-test.md`
 - `references/session-close.md`
 - `references/finish-work.md`

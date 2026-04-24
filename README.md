@@ -6,7 +6,7 @@
 
 It packages three things together:
 
-- one installable Codex skill: `ai-init`
+- an installable Codex skill set: `ai-init` plus direct lifecycle skills
 - one local scaffold command: `ai-init`
 - one durable project-memory layout for multi-session AI coding
 
@@ -24,6 +24,17 @@ Then open Codex in the project you want to initialize and run:
 
 ```text
 $ai-init
+```
+
+After installation you can also invoke lifecycle skills directly:
+
+```text
+$ai-init-start-work
+$ai-init-feature-addition
+$ai-init-bugfix
+$ai-init-session-recovery
+$ai-init-session-close
+$ai-init-finish-work
 ```
 
 ## How It Works
@@ -59,22 +70,37 @@ Install the public package from this checkout:
 ./install.sh
 ```
 
-This creates two local install links:
+This creates local install links for:
 
-- `~/.codex/skills/ai-init` -> `<repo>/skills/ai-init`
-- `~/.local/bin/ai-init` -> `<repo>/bin/ai-init`
+- `~/.codex/skills/ai-init`
+- `~/.codex/skills/ai-init-start-work`
+- `~/.codex/skills/ai-init-feature-addition`
+- `~/.codex/skills/ai-init-bugfix`
+- `~/.codex/skills/ai-init-session-recovery`
+- `~/.codex/skills/ai-init-session-close`
+- `~/.codex/skills/ai-init-finish-work`
+- `~/.local/bin/ai-init`
 
 See [docs/install.md](docs/install.md) for details.
 
 ## Basic Usage
 
-Start Codex in the project you want to initialize, then use the skill entrypoint:
+Start Codex in the project you want to initialize, then use the entrypoint that matches the moment:
 
 ```text
 $ai-init
 ```
 
-The installed skill calls the local `ai-init` command for you. The skill is the Codex entrypoint; the command is the fixed scaffold generator.
+The installed bootstrap skill calls the local `ai-init` command for you. The skill is the Codex entrypoint; the command is the fixed scaffold generator.
+
+Direct lifecycle skills are installed alongside it:
+
+- `$ai-init-start-work`
+- `$ai-init-feature-addition`
+- `$ai-init-bugfix`
+- `$ai-init-session-recovery`
+- `$ai-init-session-close`
+- `$ai-init-finish-work`
 
 You can still run the CLI directly when needed:
 
@@ -150,7 +176,8 @@ First-time user flow:
               |
               v
 +----------------------------+
-| 4. Type: $ai-init          |
+| 4. Type a skill command    |
+|    for the current lane    |
 +-------------+--------------+
               |
               v
@@ -162,22 +189,19 @@ First-time user flow:
               v
 +----------------------------+
 | 6. Codex follows printed   |
-|    prompt + lifecycle      |
+|    prompt or direct lane   |
 +----------------------------+
 ```
 
-The installed Codex surface is one skill: `ai-init`.
+Installed public commands:
 
-Inside that skill, route to the matching lifecycle workflow:
-
-- `bootstrap` - create starter docs and print the next Codex prompt.
-- `session recovery` - recover context before implementation.
-- `start work` - inspect Git state and prepare the right lane.
-- `feature addition` - write spec and plan artifacts before coding.
-- `bugfix` - reproduce, diagnose, fix, and verify a regression.
-- `pressure test` - generate a cross-agent review prompt.
-- `session close` - close a session from Git evidence.
-- `finish work` - decide what is safe to stage, commit, push, or merge.
+- `$ai-init` - create starter docs and print the next Codex prompt.
+- `$ai-init-session-recovery` - recover context before implementation.
+- `$ai-init-start-work` - inspect Git state and prepare the right lane.
+- `$ai-init-feature-addition` - write spec and plan artifacts before coding.
+- `$ai-init-bugfix` - reproduce, diagnose, fix, and verify a regression.
+- `$ai-init-session-close` - close a session from Git evidence.
+- `$ai-init-finish-work` - decide what is safe to stage, commit, push, or merge.
 
 See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed lifecycle contracts.
 
@@ -193,8 +217,8 @@ See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed lifecycl
 
 ### Skills
 
-- `skills/ai-init/` - the single public Codex skill.
-- `skills/ai-init/references/` - lifecycle workflow references used by the skill.
+- `skills/ai-init/` - bootstrap skill and shared lifecycle references.
+- `skills/ai-init-*/` - direct public lifecycle skills that wrap the shared references.
 
 ### Docs
 
@@ -255,7 +279,7 @@ Suggested release note sections:
 This repository contains the public source needed to install, inspect, test, and release `ai-init`.
 
 - `templates/*` are the files generated into downstream user projects.
-- `skills/ai-init/` is the distributable skill source.
+- `skills/ai-init/` and `skills/ai-init-*/` are the distributable skill sources.
 - Root `AGENTS.md`, `docs/ai/*`, and `docs/superpowers/specs|plans/*` are local development state for this repository and are intentionally ignored.
 - Installed local copies under `~/.codex/skills` are runtime copies, not release source of truth.
 

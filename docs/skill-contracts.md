@@ -1,6 +1,6 @@
 # Skill Contract
 
-This document describes the single public `ai-init` Codex skill and the lifecycle routes it owns.
+This document describes the public `ai-init` Codex skill set and the shared lifecycle contracts it exposes.
 
 ## Core Lifecycle
 
@@ -17,7 +17,7 @@ Contract:
 - Verify expected files/directories after normal scaffold runs.
 - Recommend the exact next prompt emitted by the command.
 
-### `ai-init`: session recovery
+### `ai-init` or `ai-init-session-recovery`: session recovery
 
 Restores working context before implementation.
 
@@ -33,7 +33,7 @@ Contract:
 - Separate doc-confirmed facts from live-workspace facts.
 - Stop after recovery unless the user asks to continue.
 
-### `ai-init`: start work
+### `ai-init` or `ai-init-start-work`: start work
 
 Prepares a safe Git lane before feature, UI, bugfix, or release-prep work.
 
@@ -44,7 +44,7 @@ Contract:
 - Create or switch branches only when safe.
 - Hand off to the appropriate lane workflow after Git context is clear.
 
-### `ai-init`: feature addition
+### `ai-init` or `ai-init-feature-addition`: feature addition
 
 Creates a spec-first and plan-first path for new feature work.
 
@@ -57,7 +57,7 @@ Contract:
 - Save an implementation plan under `docs/superpowers/plans/`.
 - Propose the first execution task without jumping straight to code.
 
-### `ai-init`: session close
+### `ai-init` or `ai-init-session-close`: session close
 
 Closes a work session from Git evidence.
 
@@ -70,7 +70,7 @@ Contract:
 - Flush only durable lessons/preferences into optional memory files.
 - Report recommended staging scope, draft commit title, risks, recovery prompt, and core files for the next session.
 
-### `ai-init`: finish work
+### `ai-init` or `ai-init-finish-work`: finish work
 
 Wraps a completed lane by running session close first and then preparing Git decisions.
 
@@ -83,7 +83,7 @@ Contract:
 
 ## Optional Lanes
 
-### `ai-init`: bugfix
+### `ai-init` or `ai-init-bugfix`: bugfix
 
 Runs the bugfix lane for existing broken behavior.
 
@@ -96,17 +96,9 @@ Contract:
 - Run a regression check.
 - Keep unrelated cleanup out of scope.
 
-### `ai-init`: pressure test
-
-Builds a review prompt for another AI to challenge the current stage.
-
-Contract:
-
-- Gather stage, objective, artifact under review, next step, constraints, and affected files.
-- Produce an absolute-path file manifest.
-- Ask the reviewer to identify hidden dependencies, impossible assumptions, vague handoffs, and missing verification.
-
 ## Optional Extensions
+
+The sibling lifecycle skills are thin wrappers over `skills/ai-init/references/`. Shared references are the source of truth for lifecycle behavior.
 
 Local recall is a cache only. Markdown docs remain the source of truth.
 
