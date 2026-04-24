@@ -48,11 +48,11 @@ mkdir -p "$HOME/.local/bin"
 ln -sf "$PWD/bin/ai-init" "$HOME/.local/bin/ai-init"
 ```
 
-Install the Codex skills manually:
+Install the Codex skill manually:
 
 ```sh
 mkdir -p "$HOME/.codex/skills"
-cp -R skills/ai-init* "$HOME/.codex/skills/"
+cp -R skills/ai-init "$HOME/.codex/skills/"
 ```
 
 See [docs/install.md](docs/install.md) for details.
@@ -119,23 +119,58 @@ Optional scaffolds can add:
 
 ## The Basic Workflow
 
-`ai-init` - Bootstraps the target project and prints the next prompt for Codex. It is the explicit command surface for creating starter docs instead of leaving the agent to interpret "ai-init" as plain text.
+First-time user flow:
 
-`ai-init-session-recovery` - Runs at the start of a new chat or resumed task. It reads project memory, change rules, current state, optional memory files, and relevant handoffs/specs/plans before implementation.
+```text
++----------------------------+
+| 1. Clone noisyhaus/ai-init |
++-------------+--------------+
+              |
+              v
++----------------------------+
+| 2. Install CLI + one skill |
+|    skills/ai-init          |
++-------------+--------------+
+              |
+              v
++----------------------------+
+| 3. cd target project       |
+|    run: ai-init            |
++-------------+--------------+
+              |
+              v
++----------------------------+
+| 4. Paste printed prompt    |
+|    into Codex              |
++-------------+--------------+
+              |
+              v
++----------------------------+
+| 5. Codex reads markdown    |
+|    source-of-truth files   |
++-------------+--------------+
+              |
+              v
++----------------------------+
+| 6. Start work with the     |
+|    ai-init lifecycle       |
++----------------------------+
+```
 
-`ai-init-start-work` - Prepares the Git lane before a feature, UI change, bugfix, or release-prep task. It checks branch/worktree state and prevents new work from starting on an unclear base.
+The installed Codex surface is one skill: `ai-init`.
 
-`ai-init-feature-addition` - Activates for new feature work. It reconnects the request to project docs, writes an invariant impact note, scopes the change, and produces spec/plan artifacts before coding.
+Inside that skill, route to the matching lifecycle workflow:
 
-`ai-init-bugfix` - Activates for bugfixes and regressions. It recovers context first, reproduces the issue when possible, identifies root cause, applies the smallest fix, and verifies the result.
+- `bootstrap` - create starter docs and print the next Codex prompt.
+- `session recovery` - recover context before implementation.
+- `start work` - inspect Git state and prepare the right lane.
+- `feature addition` - write spec and plan artifacts before coding.
+- `bugfix` - reproduce, diagnose, fix, and verify a regression.
+- `pressure test` - generate a cross-agent review prompt.
+- `session close` - close a session from Git evidence.
+- `finish work` - decide what is safe to stage, commit, push, or merge.
 
-`ai-init-pressure-test` - Produces a review prompt for another AI to challenge hidden assumptions, weak handoffs, unclear scope, and missing constraints before the next step.
-
-`ai-init-session-close` - Ends a session from evidence. It checks Git status/diffs, separates in-scope work from pre-existing dirt or generated noise, updates current state and handoff docs, and reports remaining risk.
-
-`ai-init-finish-work` - Wraps a completed lane. It runs session close first, then uses the resulting evidence to decide what can be staged, committed, pushed, or prepared for merge.
-
-See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed contract of each skill.
+See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed lifecycle contracts.
 
 ## What's Inside
 
@@ -147,14 +182,8 @@ See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed contract
 
 ### Skills
 
-- `skills/ai-init/`
-- `skills/ai-init-session-recovery/`
-- `skills/ai-init-start-work/`
-- `skills/ai-init-feature-addition/`
-- `skills/ai-init-bugfix/`
-- `skills/ai-init-pressure-test/`
-- `skills/ai-init-session-close/`
-- `skills/ai-init-finish-work/`
+- `skills/ai-init/` - the single public Codex skill.
+- `skills/ai-init/references/` - lifecycle workflow references used by the skill.
 
 ### Docs
 
@@ -167,7 +196,7 @@ See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed contract
 
 Superpowers is not required.
 
-`ai-init-feature-addition` uses a markdown-compatible spec/plan layout:
+The feature-addition lifecycle uses a markdown-compatible spec/plan layout:
 
 - `docs/superpowers/specs/`
 - `docs/superpowers/plans/`
@@ -209,13 +238,13 @@ Suggested release note sections:
 - Fixed
 - Migration
 
-## Repository Dogfooding
+## Repository Boundaries
 
-This repository uses `ai-init` to manage its own development context.
+This repository contains the public source needed to install, inspect, test, and release `ai-init`.
 
-- Root `AGENTS.md` and `docs/ai/*` describe how to work on `ai-init` itself.
 - `templates/*` are the files generated into downstream user projects.
-- `skills/*` are the distributable skill sources.
+- `skills/ai-init/` is the distributable skill source.
+- Root `AGENTS.md`, `docs/ai/*`, and `docs/superpowers/specs|plans/*` are local development state for this repository and are intentionally ignored.
 - Installed local copies under `~/.codex/skills` are runtime copies, not release source of truth.
 
 Do not run `ai-init --force` in this repository root. Test scaffold behavior in a temporary directory or fixture project.

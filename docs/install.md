@@ -34,32 +34,13 @@ Then run:
 ai-init --help
 ```
 
-## Install Codex Skills
+## Install the Codex Skill
 
-Copy all public `ai-init` skills:
-
-```sh
-mkdir -p "$HOME/.codex/skills"
-cp -R skills/ai-init* "$HOME/.codex/skills/"
-```
-
-Or copy only the core lifecycle set:
+Copy the single public `ai-init` skill:
 
 ```sh
 mkdir -p "$HOME/.codex/skills"
 cp -R skills/ai-init "$HOME/.codex/skills/"
-cp -R skills/ai-init-session-recovery "$HOME/.codex/skills/"
-cp -R skills/ai-init-start-work "$HOME/.codex/skills/"
-cp -R skills/ai-init-feature-addition "$HOME/.codex/skills/"
-cp -R skills/ai-init-session-close "$HOME/.codex/skills/"
-cp -R skills/ai-init-finish-work "$HOME/.codex/skills/"
-```
-
-Optional skills:
-
-```sh
-cp -R skills/ai-init-bugfix "$HOME/.codex/skills/"
-cp -R skills/ai-init-pressure-test "$HOME/.codex/skills/"
 ```
 
 ## Use In a Project
@@ -90,7 +71,7 @@ From the cloned repository:
 
 ```sh
 git pull --ff-only
-cp -R skills/ai-init* "$HOME/.codex/skills/"
+cp -R skills/ai-init "$HOME/.codex/skills/"
 ```
 
 If you symlinked `bin/ai-init` into `~/.local/bin`, the CLI updates with the repository checkout.
@@ -103,10 +84,10 @@ Remove the CLI symlink if you created one:
 rm -f "$HOME/.local/bin/ai-init"
 ```
 
-Remove installed skills:
+Remove the installed skill:
 
 ```sh
-rm -rf "$HOME/.codex/skills/ai-init"*
+rm -rf "$HOME/.codex/skills/ai-init"
 ```
 
 Private note-taking integrations are intentionally excluded from the public core package.

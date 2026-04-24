@@ -1,7 +1,3 @@
----
-name: ai-init-feature-addition
-description: Use when adding a new feature to an ai-init style project and the work should begin by reconnecting the request to project docs, scoping the change, and producing spec and plan artifacts before implementation.
----
 
 # AI Init Feature Addition
 

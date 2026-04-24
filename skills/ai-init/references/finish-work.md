@@ -1,7 +1,3 @@
----
-name: ai-init-finish-work
-description: Use when closing out a feature, UI, bugfix, or release-prep lane in an ai-init style project and you want Codex to run session close first, then handle commit, push, and conditional merge decisions from the resulting Git evidence.
----
 
 # AI Init Finish Work
 
@@ -10,7 +6,7 @@ Finish work by closing the session with evidence first, then deciding commit/pus
 This skill is a thin end-of-lane wrapper for ai-init projects.
 It does not replace:
 
-- `ai-init-session-close`
+- `session close workflow`
 - `git-work-commit`
 
 It uses the session-close output as the decision point for what should happen next.
@@ -64,7 +60,7 @@ Record:
 - current HEAD SHA
 - whether `origin` exists
 
-### 2. Run `ai-init-session-close` first
+### 2. Run `session close workflow` first
 
 Do not skip session close.
 
@@ -204,7 +200,7 @@ Use this section order:
 
 ## Guardrails
 
-- Never skip `ai-init-session-close`.
+- Never skip `session close workflow`.
 - Never auto-stash.
 - Never auto-reset.
 - Never commit broad unrelated scope by default.
@@ -219,12 +215,12 @@ Use this section order:
 Input:
 
 ```text
-$ai-init-finish-work
+$finish work workflow
 ```
 
 Expected outcome:
 
-- run `ai-init-session-close`
+- run `session close workflow`
 - stage only the recommended docs scope
 - commit
 - push current branch
@@ -235,12 +231,12 @@ Expected outcome:
 Input:
 
 ```text
-$ai-init-finish-work
+$finish work workflow
 ```
 
 Expected outcome:
 
-- run `ai-init-session-close`
+- run `session close workflow`
 - stage only the recommended code scope
 - commit
 - push current branch

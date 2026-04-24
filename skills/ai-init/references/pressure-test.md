@@ -1,7 +1,3 @@
----
-name: ai-init-pressure-test
-description: Use in an ai-init style project when another AI should pressure-test the current stage for gray areas, hidden dependencies, impossible assumptions, or weak file/context handoff.
----
 
 # AI Init Pressure Test
 

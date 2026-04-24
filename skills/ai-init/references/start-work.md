@@ -1,7 +1,3 @@
----
-name: ai-init-start-work
-description: Use when starting a new feature, UI change, bugfix, or release-prep task in an ai-init style project and you want Codex to handle the Git intake, dirty-worktree triage, and branch setup before handing off to the lane workflow.
----
 
 # AI Init Start Work
 
@@ -10,9 +6,9 @@ Start work by fixing the Git context first, not by jumping into the lane skill.
 This skill is a thin Git/workspace wrapper for ai-init projects.
 It does not replace:
 
-- `ai-init-feature-addition`
-- `ai-init-bugfix`
-- `ai-init-session-recovery`
+- `feature addition workflow`
+- `bugfix workflow`
+- `session recovery workflow`
 
 It prepares the branch and workspace so those skills run in the right place.
 
@@ -39,16 +35,16 @@ For non-repo bootstrap, hand off to a future `ai-init-git-bootstrap` workflow or
 Preferred invocation pattern:
 
 ```text
-$ai-init-start-work <lane> <branch-slug>
+$ai-init start-work <lane> <branch-slug>
 ```
 
 Examples:
 
 ```text
-$ai-init-start-work feature export-csv
-$ai-init-start-work ui table-polish
-$ai-init-start-work fix license-dialog
-$ai-init-start-work release v0.1.2
+$ai-init start-work feature export-csv
+$ai-init start-work ui table-polish
+$ai-init start-work fix license-dialog
+$ai-init start-work release v0.1.2
 ```
 
 Interpretation:
@@ -94,7 +90,7 @@ If the current branch already matches the requested lane and the work is clearly
 In that case:
 
 1. say that the session appears to already be inside the target lane
-2. recommend `ai-init-session-recovery`
+2. recommend `session recovery workflow`
 3. stop unless the user explicitly wants a fresh branch anyway
 
 If the current branch does not match the requested lane, continue.
@@ -154,8 +150,8 @@ Only gather enough context to hand off correctly.
 
 After branch setup:
 
-- `feature` -> recommend or invoke `ai-init-feature-addition`
-- `fix` -> recommend or invoke `ai-init-bugfix`
+- `feature` -> recommend or invoke `feature addition workflow`
+- `fix` -> recommend or invoke `bugfix workflow`
 - `ui` -> start with a UI lane summary:
   - read `docs/features/ui-design-bible.md` if present
   - if missing, say substantial UI work should not proceed until the repo-local UI design bible is restored or defined
@@ -191,7 +187,7 @@ Use this section order:
 Input:
 
 ```text
-$ai-init-start-work feature export-csv
+$ai-init start-work feature export-csv
 ```
 
 Expected action:
@@ -209,7 +205,7 @@ git status --short
 Then hand off to:
 
 ```text
-$ai-init-feature-addition
+$feature addition workflow
 ```
 
 ### Bugfix
@@ -217,7 +213,7 @@ $ai-init-feature-addition
 Input:
 
 ```text
-$ai-init-start-work fix license-dialog
+$ai-init start-work fix license-dialog
 ```
 
 Expected action:
@@ -235,7 +231,7 @@ git status --short
 Then hand off to:
 
 ```text
-$ai-init-bugfix
+$bugfix workflow
 ```
 
 ### UI
@@ -243,7 +239,7 @@ $ai-init-bugfix
 Input:
 
 ```text
-$ai-init-start-work ui table-polish
+$ai-init start-work ui table-polish
 ```
 
 Expected action:

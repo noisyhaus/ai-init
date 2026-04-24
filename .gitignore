@@ -1,5 +1,11 @@
 .DS_Store
 
+# Local ai-init project state for this repository.
+/AGENTS.md
+/docs/ai/
+/docs/superpowers/specs/
+/docs/superpowers/plans/
+
 # Local runtime state
 .omx/
 .ai-index/index.sqlite

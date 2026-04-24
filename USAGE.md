@@ -24,11 +24,11 @@ mkdir -p "$HOME/.local/bin"
 ln -sf "$PWD/bin/ai-init" "$HOME/.local/bin/ai-init"
 ```
 
-Install the Codex skills:
+Install the Codex skill:
 
 ```sh
 mkdir -p "$HOME/.codex/skills"
-cp -R skills/ai-init* "$HOME/.codex/skills/"
+cp -R skills/ai-init "$HOME/.codex/skills/"
 ```
 
 ## Basic Flow
@@ -103,18 +103,20 @@ Rule packs:
 
 ## Skill Workflow
 
-After installing the skills into `~/.codex/skills`, use them as explicit workflow commands in Codex:
+After installing the `ai-init` skill into `~/.codex/skills`, use `$ai-init` as the single entrypoint in Codex.
 
-- `$ai-init` - bootstrap and orient a project.
-- `$ai-init-session-recovery` - recover context at the start of a new chat or resumed task.
-- `$ai-init-start-work` - prepare the Git lane before implementation.
-- `$ai-init-feature-addition` - write feature spec and plan artifacts before coding.
-- `$ai-init-bugfix` - reproduce, diagnose, fix, and verify a bug.
-- `$ai-init-pressure-test` - generate a cross-agent review prompt.
-- `$ai-init-session-close` - close a session from Git evidence.
-- `$ai-init-finish-work` - wrap a completed lane for commit, push, or merge readiness.
+The lifecycle routes inside the skill are:
 
-See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed skill contracts.
+- `bootstrap` - bootstrap and orient a project.
+- `session recovery` - recover context at the start of a new chat or resumed task.
+- `start work` - prepare the Git lane before implementation.
+- `feature addition` - write feature spec and plan artifacts before coding.
+- `bugfix` - reproduce, diagnose, fix, and verify a bug.
+- `pressure test` - generate a cross-agent review prompt.
+- `session close` - close a session from Git evidence.
+- `finish work` - wrap a completed lane for commit, push, or merge readiness.
+
+See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed lifecycle contracts.
 
 ## Session Recovery Output
 

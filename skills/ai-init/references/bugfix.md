@@ -1,7 +1,3 @@
----
-name: ai-init-bugfix
-description: Use when fixing a bug, regression, broken flow, or integration failure in an ai-init style project where the expected behavior already exists and the work should begin with context reconnect, triage, root-cause analysis, and verification.
----
 
 # AI Init Bugfix
 
@@ -11,9 +7,9 @@ This skill is an orchestrator. Reuse matching local skills for recovery, debuggi
 
 ## Required Background / Optional Helpers
 
-Read and follow `ai-init-session-recovery` as the context recovery surface.
+Read and follow `session recovery workflow` as the context recovery surface.
 
-- `ai-init-session-recovery`
+- `session recovery workflow`
 
 The following helper skills are optional. Use them when available, but do not require them for public portability:
 
@@ -38,7 +34,7 @@ Do not use this skill when:
 - the request intentionally changes user-visible behavior
 - the issue is clearly a feature addition rather than a contract restore
 
-For those cases, use `ai-init-feature-addition` instead.
+For those cases, use `feature addition workflow` instead.
 
 ## Contract Priority
 
@@ -84,7 +80,7 @@ Dispatch by classification:
 
 - true bug -> continue in bugfix flow
 - expectation gap -> if an existing contract can be named without new design, continue in bugfix flow; otherwise escalate through the brainstorming rule
-- feature-in-disguise -> hand off to `ai-init-feature-addition` immediately
+- feature-in-disguise -> hand off to `feature addition workflow` immediately
 - environment issue -> document the blocker, recommend environment remediation, and re-triage only after the environment is stable
 
 Use fast-path only when all are true:
@@ -148,7 +144,7 @@ Do not escalate only because multiple layers are involved.
 
 If clarification preserves the same existing contract, return to bugfix and continue from Fix.
 
-If the work becomes new behavior design, hand off to `ai-init-feature-addition`.
+If the work becomes new behavior design, hand off to `feature addition workflow`.
 
 ## Lane Hand-Off Protocol
 
@@ -184,7 +180,7 @@ Keep bugfix output compact and operational:
 ## Anti-Patterns
 
 - duplicating recovery logic across feature and bugfix skills
-- turning `ai-init-bugfix` into a skill that inlines full debugging, TDD, and verification manuals
+- turning `bugfix workflow` into a skill that inlines full debugging, TDD, and verification manuals
 - sending every bug through brainstorming
 - silently switching lanes mid-session
 - skipping context reconnect because the bug looks small

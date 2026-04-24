@@ -1,7 +1,3 @@
----
-name: ai-init-session-recovery
-description: Use when resuming work in an ai-init style project, recovering context after a new chat, or asking to restore the current objective, risks, and next steps from project docs and the live workspace.
----
 
 # AI Init Session Recovery
 

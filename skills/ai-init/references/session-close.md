@@ -1,7 +1,3 @@
----
-name: ai-init-session-close
-description: Use when ending a work session in an ai-init style project, summarizing current progress from git evidence, or updating current-state and handoff docs without starting new implementation.
----
 
 # AI Init Session Close
 

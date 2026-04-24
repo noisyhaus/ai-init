@@ -26,8 +26,9 @@ Confirm:
 
 - README installation instructions still work.
 - `docs/install.md` matches the current CLI and skill layout.
-- `docs/skill-contracts.md` lists every public skill.
+- `docs/skill-contracts.md` describes the public `ai-init` skill and its lifecycle routes.
 - `docs/superpowers-compatibility.md` still describes optional compatibility only.
+- Root `AGENTS.md`, `docs/ai/*`, and `docs/superpowers/specs|plans/*` are not tracked.
 - Scaffold behavior was tested in a temporary directory, not the repository root.
 
 ## Tag
