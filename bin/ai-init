@@ -16,7 +16,7 @@ usage() {
   cat <<'USAGE'
 Usage: ai-init [--force] [--with-rules] [--with-memory-plus] [--with-local-recall] [--new-project|--existing-project|--auto] [--print-prompt] [--help]
 
-Create a reusable per-project Codex/free-code starter in the current directory.
+Create a reusable per-project AI coding starter in the current directory.
 
 Options:
   --force       Overwrite existing starter files
@@ -30,7 +30,7 @@ Options:
                 Treat this directory as an existing project when printing next-step guidance
   --auto        Infer new vs existing project from current files (default)
   --print-prompt
-                Print only the recommended follow-up prompt for free-code/Codex CLI
+                Print only the recommended follow-up prompt for Codex or another coding agent
   --help        Show this help message
 USAGE
 }
@@ -218,7 +218,7 @@ cat <<NEXT
 ai-init complete for: $project_name
 mode: $resolved_mode
 
-Suggested next step for free-code / Codex CLI:
+Suggested next step for Codex or another coding agent:
 NEXT
 print_followup_prompt
 

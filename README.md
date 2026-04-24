@@ -161,6 +161,7 @@ See [docs/skill-contracts.md](docs/skill-contracts.md) for the detailed contract
 - [docs/install.md](docs/install.md)
 - [docs/skill-contracts.md](docs/skill-contracts.md)
 - [docs/superpowers-compatibility.md](docs/superpowers-compatibility.md)
+- [USAGE.md](USAGE.md)
 
 ## Superpowers Compatibility
 
