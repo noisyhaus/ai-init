@@ -2,13 +2,26 @@
 
 # ai-init
 
-[Korean](README.ko.md)
+[한국어](README.ko.md)
 
 `ai-init` is a markdown-first operating layer for Codex projects.
 
 It gives your coding agent a durable project memory, a repeatable work lifecycle, and direct Codex skills for the moments that usually break down across long AI-assisted development sessions: starting work, adding features, fixing bugs, recovering context, closing a session, and finishing a branch.
 
 The goal is simple: stop treating chat history as the source of truth.
+
+## Why It Exists
+
+`ai-init` was created for the ordinary friction that appears after a few serious AI coding sessions:
+
+- The agent forgets project decisions because the important context lived only in chat.
+- Every new session starts with repeated explanation instead of useful work.
+- Feature requests jump straight to code before scope, risks, and verification are clear.
+- Bugfixes are attempted from guesses instead of a reproduced symptom.
+- Session handoffs say "done" without enough Git evidence for the next agent to trust.
+- Local project rules, user preferences, and current state drift across scattered notes.
+
+`ai-init` turns those fragile habits into a small project-local onboarding system. The agent gets a predictable set of markdown files to read, update, and hand off through.
 
 ## Philosophy
 
@@ -177,6 +190,22 @@ Optional scaffolds can add:
 - `docs/ai/user_preferences.md`
 - `.ai-index/`
 - `scripts/ai-index.py`
+
+## Generated `AGENTS.md`
+
+When `$ai-init` runs in a target project, it writes a compact `AGENTS.md` from [templates/AGENTS.md](templates/AGENTS.md). That file is the project-level operating contract for Codex.
+
+The generated file tells the agent to:
+
+- Keep `AGENTS.md` short and operational instead of using it as a second README.
+- Read `docs/ai/project_memory.md`, `docs/ai/change_playbook.md`, and `docs/ai/current_state.md` at startup.
+- Treat markdown docs as the source of truth and optional recall/index files as rebuildable helpers.
+- Avoid broad refactors, speculative abstractions, silent ambiguity resolution, and unrelated cleanup.
+- Route feature work through a spec and plan, bugfixes through reproduce-diagnose-fix-verify, and refactors through regression protection first.
+- Verify before claiming completion and report concrete evidence.
+- At session close, inspect Git state first, update `docs/ai/current_state.md`, and write handoff notes when useful.
+
+In practice, the generated `AGENTS.md` makes a blank or existing repository behave like an onboarded Codex workspace: the agent knows what to read first, where durable memory belongs, how to start work, and how to close the loop.
 
 ## The Basic Workflow
 
